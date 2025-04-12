@@ -8,8 +8,10 @@ import com.google.gson.Gson;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.*;
+import java.util.List;
 
-@WebServlet(name = "InscripcionServlet", urlPatterns = {"/inscripciones", "/inscripciones/*"})
+@WebServlet(name = "InscripcionServlet", urlPatterns = {"/inscripciones"})
+
 public class InscripcionServlet extends HttpServlet {
     private final InscripcionService service = new InscripcionService();
     private final Gson gson = new Gson();
@@ -29,21 +31,21 @@ public class InscripcionServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String path = req.getPathInfo();
+        String path = req.getPathInfo(); // Esto captura lo que sigue después de /inscripciones
+
         resp.setContentType("application/json");
 
         if (path != null && path.startsWith("/carrera")) {
             String nombre = req.getParameter("nombre");
-            var resultado = service.buscarPorCarrera(nombre);
+            List<Inscripcion> resultado = service.buscarPorCarrera(nombre);
             resp.getWriter().write(gson.toJson(resultado));
         } else if (path != null && path.equals("/priorizadas")) {
-            var resultado = service.priorizadas();
+            List<Inscripcion> resultado = service.priorizadas();
             resp.getWriter().write(gson.toJson(resultado));
         } else {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             resp.getWriter().write("{\"error\": \"Ruta no encontrada\"}");
         }
     }
+
 }
-
-
