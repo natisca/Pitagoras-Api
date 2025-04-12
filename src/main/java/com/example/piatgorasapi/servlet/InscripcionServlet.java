@@ -1,17 +1,15 @@
 package com.example.piatgorasapi.servlet;
 
 
-
-
 import com.example.piatgorasapi.dao.Inscripcion;
 import com.example.piatgorasapi.service.InscripcionService;
+import com.google.gson.Gson;
 
-import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.*;
 
-@WebServlet
+@WebServlet(name = "InscripcionServlet", urlPatterns = {"/inscripciones", "/inscripciones/*"})
 public class InscripcionServlet extends HttpServlet {
     private final InscripcionService service = new InscripcionService();
     private final Gson gson = new Gson();
@@ -47,4 +45,5 @@ public class InscripcionServlet extends HttpServlet {
         }
     }
 }
+
 
